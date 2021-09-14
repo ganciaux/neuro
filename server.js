@@ -7,6 +7,8 @@ const clientRoutes = require('./routes/clientRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const sessionRoutes = require('./routes/sessionRoutes');
+const appError = require('./utils/appError');
+const globalErrorHandler = require('./controllers/errorController');
 
 dotenv.config({path: './config/.env'})
 
@@ -24,9 +26,13 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/sessions', sessionRoutes);
 
+app.all('*', (req, res, next) => {
+  next(new appError(`Can't find ${req.originalUrl} on this server`, 404));
+});
 
 //server
 app.listen(process.env.PORT, () => {
     console.log(`Listenning on port ${process.env.PORT}`)
 })
 
+app.use(globalErrorHandler);
