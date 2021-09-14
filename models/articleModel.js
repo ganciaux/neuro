@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const articleSchema = new mongoose.Schema(
     {
@@ -29,6 +30,12 @@ const articleSchema = new mongoose.Schema(
         timestamps: true,
     }
 );
+
+articleSchema.pre('save', function (next) {
+    console.log('Add article slug...')
+    this.slug = slugify(`${this.name}`, { lower: true });
+    next();
+});
 
 const ArticleModel = mongoose.model('Article', articleSchema);
 

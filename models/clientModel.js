@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 const { isEmail } = require('validator');
 
 const clientSchema = new mongoose.Schema(
@@ -68,6 +69,12 @@ const clientSchema = new mongoose.Schema(
         timestamps: true,
     }
 );
+
+clientSchema.pre('save', function (next) {
+    console.log('Add client slug...')
+    this.slug = slugify(`${this.name} ${this.firstname}`, { lower: true });
+    next();
+});
 
 const ClientModel = mongoose.model('Client', clientSchema);
 
