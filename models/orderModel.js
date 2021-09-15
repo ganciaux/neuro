@@ -94,15 +94,16 @@ const orderSchema = new mongoose.Schema(
     }
 );
 
-orderSchema.pre('save', function (next) {
+orderSchema.pre('save', async function (next) {
+  const identifier = await Identifier.findOneAndUpdate({ model: "order", field: "orderId", years: { $elemMatch: { year: this.date.getFullYear() } } }, { $inc: { "years.$.count": 1 } });
+  if (identifier) {
+    let year = identifier.years.find(el => el.year === this.date.getFullYear())
+    this.orderId = year.count;
+    this.reference = `${this.date.getFullYear()}${utils.charPad(this.date.getMonth() + 1,2)}${utils.charPad(this.orderId,4)}`;
+   }
   let price = 0.0;
   this.articles.forEach(element => price += Math.round(element.quantity*element.unitCost*100)/100 );
   this.price=price;
-  
-  //find({model:"order",field:"orderId", "years":{$elemMatch: {year:2021}}})
-  //.update({"years": {$elemMatch: {id: <object-id>}}}, {$inc: {"answer.$.votes": 1}});
-
-  //this.reference = `${this.date.getFullYear()}${utils.charPad(this.date.getMonth() + 1,2)}${utils.charPad(this.orderId,4)}`;
   next();
 });
 

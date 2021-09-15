@@ -13,10 +13,6 @@ const IdentifierSchema = new mongoose.Schema(
             type: String,     
         },
         years: [{
-            id: {
-                type: mongoose.Schema.ObjectId,
-                required: true
-            },
             year: {
                 type: Number,
                 default: 0,

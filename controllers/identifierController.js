@@ -7,7 +7,7 @@ exports.createIdentifier = factory.createOne(Identifier);
 
 exports.updateIdentifier = async (req, res, next) => {
 
-    const doc = await Identifier.updateOne({id:req.params.id, years: {$elemMatch: {year: 2020}}}, {$inc: {"years.$.count": 1}});
+    const doc = await Identifier.findOneAndUpdate({model:req.params.model, field: req.params.field, years: {$elemMatch: {year: req.params.year}}}, {$inc: {"years.$.count": 1}});
 
     if (!doc) {
         return next(new AppError('No document found with this id', 404));

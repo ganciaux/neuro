@@ -6,6 +6,6 @@ const router = express.Router();
 router.get('/', identifierController.getAllIdentifiers);
 router.get('/:id', identifierController.getIdentifier);
 router.post('/', identifierController.createIdentifier);
-router.put('/:id', identifierController.updateIdentifier);
+router.put('/:model/:field/:year', identifierController.updateIdentifier);
 
 module.exports = router;
