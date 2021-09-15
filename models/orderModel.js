@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const autoIncrement = require('mongoose-auto-increment');
-
-autoIncrement.initialize(mongoose.connection);
+const Identifier = require('../models/identifierModel');
+const utils = require('../utils/utils');
 
 const orderTypeSchema = new mongoose.Schema(
 {
@@ -33,6 +32,10 @@ const orderSchema = new mongoose.Schema(
           type: mongoose.Schema.ObjectId,
           ref: 'OrderType',
           required: [true, 'Order must have a type'],
+      },
+      date:{
+        type: Date,
+        default: Date.now(),
       },
         reference: {
             type: String,
@@ -68,8 +71,16 @@ const orderSchema = new mongoose.Schema(
                 ref: 'Article',
                 required: true
               },
-              quantity: Number,
-              unitCost: Number,
+              quantity: {
+                type: Number,
+                default: 0.0,
+                required: true
+              },
+              unitCost: {
+                type: Number,
+                default: 0.0,
+                required: true
+              },
               description: {
                 type: String,
                 default: '',
@@ -83,14 +94,15 @@ const orderSchema = new mongoose.Schema(
     }
 );
 
-orderSchema.plugin(autoIncrement.plugin, { model: 'Order', field: 'orderId', startAt: 1, });
-
-//order.resetCount(function(err, nextCount) {});
-
 orderSchema.pre('save', function (next) {
   let price = 0.0;
-  this.articles.forEach(element => price += Math.round(element.quantity*element.price*100)/100 );
+  this.articles.forEach(element => price += Math.round(element.quantity*element.unitCost*100)/100 );
   this.price=price;
+  
+  //find({model:"order",field:"orderId", "years":{$elemMatch: {year:2021}}})
+  //.update({"years": {$elemMatch: {id: <object-id>}}}, {$inc: {"answer.$.votes": 1}});
+
+  //this.reference = `${this.date.getFullYear()}${utils.charPad(this.date.getMonth() + 1,2)}${utils.charPad(this.orderId,4)}`;
   next();
 });
 

@@ -173,3 +173,4 @@ amount
 {"type": "Bilan"}, 
 {"type": "Suivi"}, 
 {"type": "Synthèse"}]
+
