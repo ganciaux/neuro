@@ -1,6 +1,7 @@
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const APIFeatures = require('../utils/apiFeatures');
+var ObjectId = require('mongoose').Types.ObjectId;
 
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
@@ -44,15 +45,27 @@ exports.createOne = (Model) =>
 
 exports.getOne = (Model, populateOptions) =>
   catchAsync(async (req, res, next) => {
-    let query = Model.findById(req.params.id);
+    console.log(Model.collection.collectionName);
+    if (ObjectId.isValid(req.params.id)==true)
+      query = Model.findById(req.params.id);
+    else
+      query = Model.find({slug:req.params.id});
+
     if (populateOptions) query = query.populate(populateOptions);
 
-    const doc = await query;
+    let doc = await query;
+
+    console.log(doc)
 
     if (!doc) {
       return next(new AppError('No document found with this id', 404));
     }
-    //const tour = await Tour.findOne({_id:req.params.id});
+    if (doc.length===0) {
+      return next(new AppError('No document found with this slug', 404));
+    }
+
+    if (Array.isArray(doc)) doc=doc[0]
+    
     res.status(200).json({
       status: 'success',
       data: {
@@ -64,6 +77,7 @@ exports.getOne = (Model, populateOptions) =>
 exports.getAll = (Model) =>
   catchAsync(async (req, res, next) => {
     let filter = {};
+    //SPECIFIC PARAMS
     if (req.params.clientId) filter = { client: req.params.clientId };
     //EXECUTE QUERY
     const features = new APIFeatures(Model.find(filter), req.query)
@@ -78,6 +92,8 @@ exports.getAll = (Model) =>
     res.status(200).json({
       status: 'success',
       results: docs.length,
-      data: { data: docs },
+      data: { 
+        data: docs 
+      },
     });
   });

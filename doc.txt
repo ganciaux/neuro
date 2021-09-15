@@ -11,7 +11,7 @@ zip
 origin
 country
 birthdate
-comment
+description
 created_at
 
 
@@ -27,7 +27,7 @@ id_client
 id_order_type
 id_order_ref
 status: en cours, annulée, validée
-comment
+description
 sessions
 price
 [articles]{
@@ -58,7 +58,7 @@ id_client
 id_session_type
 date
 status
-comment
+description
 create_at
 
 
@@ -124,7 +124,7 @@ amount
   "updatedAt": {
     "$date": "2021-08-31T14:04:53.539Z"
   },
-  "comment": "Commentaire de test"},
+  "description": "texte de test"},
   {"type": "Madame",
   "name": "bigerel",
   "firstname": "aurélie",
@@ -142,17 +142,17 @@ amount
   "updatedAt": {
     "$date": "2021-08-31T14:04:53.539Z"
   },
-  "comment": "Commentaire de test 2"
+  "description": "texte de test 2"
 }]
 
 
-[{"type": "Autre"}, 
-{"type": "Consultation neuropsychologique", "code":""}, 
-{"type": "Scéance de remédiation cognitive", "code":""}, 
-{"type": "Evalutation psychométrique", "code":""}, 
-{"type": "Evaluation neuropsycologique (petite)", "code":""}, 
-{"type": "Evaluation neuropsycologique (grande)", "code":""}, 
-{"type": "Atelier mémoire"}]
+[{"type": "Autre","code": "AU"}, 
+{"type": "Consultation neuropsychologique", "code":"CN"}, 
+{"type": "Scéance de remédiation cognitive", "code":"SRC"}, 
+{"type": "Evalutation psychométrique", "code":"EP"}, 
+{"type": "Evaluation neuropsycologique (petite)", "code":"EN-P"}, 
+{"type": "Evaluation neuropsycologique (grande)", "code":"EN-G"}, 
+{"type": "Atelier mémoire", "code": "AM"}]
 
 
 [{"name":"Consultation neuropsychologique",

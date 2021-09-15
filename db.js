@@ -11,4 +11,6 @@ mongoose
   .then(() => {
     console.log('DB connexion success!', process.env.DB_LOCAL);
   })
-    .catch((err) => { console.log("Failed to connect to MongoDB", err)});
+  .catch((err) => { console.log("Failed to connect to MongoDB", err)});
+
+//const connection = mongoose.createConnection(process.env.DB_LOCAL);

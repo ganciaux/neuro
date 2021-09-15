@@ -1,4 +1,22 @@
 const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
+
+autoIncrement.initialize(mongoose.connection);
+
+const orderTypeSchema = new mongoose.Schema(
+{
+  type: {
+    type: String,
+    required: true,
+    enum: {
+      values: ['Autre', 'consultation neuropsychologique', 'sceance de remédiation cognitive', 'evalutation psychométrique', 'evaluation neuropsycologique petite', 'evaluation neuropsycologique grande', 'atelier mémoire', 'devis' ],
+    },
+  },
+  code: {
+    type: String,
+    unique: true
+  }
+});
 
 const orderSchema = new mongoose.Schema(
     {
@@ -11,18 +29,16 @@ const orderSchema = new mongoose.Schema(
             type: mongoose.Schema.ObjectId,
             ref: 'Order',
         },
+        type: {
+          type: mongoose.Schema.ObjectId,
+          ref: 'OrderType',
+          required: [true, 'Order must have a type'],
+      },
         reference: {
             type: String,
             required: false,
             minlength: 5,
           },
-        type: {
-            type: String,
-            required: true,
-            enum: {
-              values: ['Autre', 'consultation neuropsychologique', 'sceance de remédiation cognitive', 'evalutation psychométrique', 'evaluation neuropsycologique petite', 'evaluation neuropsycologique grande', 'atelier mémoire', 'devis' ],
-            },
-        },
         status: {
             type: String,
             required: true,
@@ -30,13 +46,15 @@ const orderSchema = new mongoose.Schema(
               values: ['En cours', 'Annulée', 'Validée'],
             },
           },
-        comment: {
+        description: {
             type: String,
             required: false,
             minlength: 5,
+            trim: true
         },
         sessions: {
             type: Number,
+            default: 0.0,
             required: [true, 'A Order must have a session number'],
         },
         price: {
@@ -45,12 +63,18 @@ const orderSchema = new mongoose.Schema(
         },
         articles: [
             {
-              type: {
+              article: {
                 type: mongoose.Schema.ObjectId,
-                ref: 'Article'
+                ref: 'Article',
+                required: true
               },
               quantity: Number,
-              price: Number
+              unitCost: Number,
+              description: {
+                type: String,
+                default: '',
+                trim: true
+              }
             }
           ],
     },
@@ -59,6 +83,16 @@ const orderSchema = new mongoose.Schema(
     }
 );
 
-const OrderModel = mongoose.model('Order', orderSchema);
+orderSchema.plugin(autoIncrement.plugin, { model: 'Order', field: 'orderId', startAt: 1, });
 
-module.exports = OrderModel;
+//order.resetCount(function(err, nextCount) {});
+
+orderSchema.pre('save', function (next) {
+  let price = 0.0;
+  this.articles.forEach(element => price += Math.round(element.quantity*element.price*100)/100 );
+  this.price=price;
+  next();
+});
+
+exports.OrderType = mongoose.model('OrderType', orderTypeSchema);
+exports.Order = mongoose.model('Order', orderSchema);

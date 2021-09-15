@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
-const slugify = require('slugify');
+const slug = require('mongoose-slug-updater');
 const { isEmail } = require('validator');
+
+mongoose.plugin(slug);
 
 const clientSchema = new mongoose.Schema(
     {
-        slug: {
-            type: String,
-        },
+        slug: { type: String, slug: ["name", "firstname"], unique: true },
         type: {
             type: String,
             required: true,
@@ -43,7 +43,7 @@ const clientSchema = new mongoose.Schema(
         },
         address: {
             type: String,
-            maxlength: 32,
+            maxlength: 64,
         },
         city: {
             type: String,
@@ -60,21 +60,16 @@ const clientSchema = new mongoose.Schema(
             type: Date,
             default: Date.now(),
         },
-        comment: {
+        description: {
             type: String,
             maxlength: 1024,
+            trim: true
         }
     },
     {
         timestamps: true,
     }
 );
-
-clientSchema.pre('save', function (next) {
-    console.log('Add client slug...')
-    this.slug = slugify(`${this.name} ${this.firstname}`, { lower: true });
-    next();
-});
 
 const ClientModel = mongoose.model('Client', clientSchema);
 

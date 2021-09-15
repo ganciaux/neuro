@@ -30,13 +30,13 @@ const paymentSchema = new mongoose.Schema(
             type: String,
             required: true,
             enum: {
-              values: ['Comptabilisé', 'En attente'],
+                values: ['Comptabilisé', 'En attente'],
             },
-          },
-        comment: {
+        },
+        description: {
             type: String,
-            required: false,
-            minlength: 5,
+            maxlength: 1024,
+            trim: true
         }
     },
     {

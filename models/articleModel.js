@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
-const slugify = require('slugify');
+const slug = require('mongoose-slug-updater');
+
+mongoose.plugin(slug);
 
 const articleSchema = new mongoose.Schema(
     {
-        slug: {
-            type: String,
-        },
         name: {
             type: String,
             required: true,
@@ -13,6 +12,7 @@ const articleSchema = new mongoose.Schema(
             maxlength: 60,
             trim: true
         },
+        slug: { type: String, slug: "name", unique: true, slugPaddingSize: 3 },
         description: {
             type: String,
             maxlength: 1024,
@@ -23,6 +23,7 @@ const articleSchema = new mongoose.Schema(
         },
         sessions: {
             type: Number,
+            default:0,
             required: [true, 'An article must have a session number'],
         }
     },
@@ -30,12 +31,6 @@ const articleSchema = new mongoose.Schema(
         timestamps: true,
     }
 );
-
-articleSchema.pre('save', function (next) {
-    console.log('Add article slug...')
-    this.slug = slugify(`${this.name}`, { lower: true });
-    next();
-});
 
 const ArticleModel = mongoose.model('Article', articleSchema);
 

@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
+
+autoIncrement.initialize(mongoose.connection);
 
 const billSchema = new mongoose.Schema(
     {
@@ -31,10 +34,10 @@ const billSchema = new mongoose.Schema(
             type: Number,
             default: 0.0,
         },
-        comment: {
+        description: {
             type: String,
-            required: false,
-            minlength: 5,
+            maxlength: 1024,
+            trim: true
         },
         articles: [
             {
@@ -51,6 +54,8 @@ const billSchema = new mongoose.Schema(
         timestamps: true,
     }
 );
+
+billSchema.plugin(autoIncrement.plugin, { model: 'Bill', field: 'billId', startAt: 1, });
 
 const BillModel = mongoose.model('Bill', billSchema);
 
