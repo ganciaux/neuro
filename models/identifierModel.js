@@ -12,42 +12,36 @@ const IdentifierSchema = new mongoose.Schema(
         field: { 
             type: String,     
         },
-        years: [{
-            year: {
-                type: Number,
-                default: 0,
-                required: true,
-                unique: true,
-                validate : {
-                    validator : Number.isInteger,
-                    message   : '{VALUE} is not an integer value'
-                }
-            },
-            count: {
-                type: Number,
-                default: 0,
-                required: true
+        year: {
+            type: Number,
+            default: 0,
+            required: true,
+            unique: true,
+            validate : {
+                validator : Number.isInteger,
+                message   : '{VALUE} is not an integer value'
             }
-        }]
+        },
+        count: {
+            type: Number,
+            default: 0,
+            required: true
+        }
     },
     {
         timestamps: true,
     }
 );
 
-IdentifierSchema.index({ "model": 1, "field": 1}, { "unique": true });
+IdentifierSchema.index({ "model": 1, "field": 1, "year": 1}, { "unique": true });
 
 IdentifierSchema.pre('save', function (next) {
     console.log('save:', this)
     if (this.isNew) {
-        console.log("Init years...")
-        for(i=2020;i<2030;i++){
-            this.years.push({year:i, count:0});
-        }
+        this.count = 0;
     } else {
         console.log("Update...")
     }
-    console.log(this.years)
     next();
   });
 
