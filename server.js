@@ -4,7 +4,7 @@ const db = require('./db.js');
 const articleRoutes = require('./routes/articleRoutes');
 const billRoutes = require('./routes/billRoutes');
 const clientRoutes = require('./routes/clientRoutes');
-const identifierRoutes = require('./routes/identifierRoutes');
+const referenceRoutes = require('./routes/referenceRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const sessionRoutes = require('./routes/sessionRoutes');
@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' })); //data from form
 app.use('/api/articles', articleRoutes);
 app.use('/api/bills', billRoutes);
 app.use('/api/clients', clientRoutes);
-app.use('/api/identifiers', identifierRoutes);
+app.use('/api/references', referenceRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/sessions', sessionRoutes);
@@ -34,7 +34,7 @@ app.all('*', (req, res, next) => {
 
 //server
 app.listen(process.env.PORT, () => {
-    console.log(`Listenning on port ${process.env.PORT}`)
+  console.log(`Listenning on port ${process.env.PORT}`)
 })
 
 app.use(globalErrorHandler);

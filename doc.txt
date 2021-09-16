@@ -174,3 +174,15 @@ amount
 {"type": "Suivi"}, 
 {"type": "Synthèse"}]
 
+[{"status": "Non payée"}, 
+{"status": "partiellement"}, 
+{"status": "non payée"}]
+
+[{"status": "En cours"}, 
+{"status": "Annulée"}, 
+{"status": "Validée"}]
+
+[{"type": "Cheque"},
+{"type": "Espece"},
+{"type": "CB"},
+{"type": "Virement"}]]
