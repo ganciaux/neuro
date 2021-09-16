@@ -20,11 +20,10 @@ exports.getYearIdentifier = async (req, res, next) => {
     });
 }
 exports.updateYearIdentifier = async (req, res, next) => {
-    console.log("updateYearIdentifier")
     const doc = await Identifier.findOneAndUpdate(
         { model: req.params.model, field: req.params.field, year: req.params.year },
-        { $inc: { count: 1 } });
-    console.log(doc);
+        { $inc: { count: 1 } },
+        {new: true});
     if (!doc) {
         return next(new AppError('No document found with this id', 404));
     }

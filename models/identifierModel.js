@@ -45,6 +45,14 @@ IdentifierSchema.pre('save', function (next) {
     next();
   });
 
+IdentifierSchema.statics.getNewIdentifier = async function getNewIdentifier(model, field, year){
+    const doc = await this.findOneAndUpdate(
+        { model, field, year },
+        { $inc: { count: 1 } },
+        {new: true});
+    return doc;
+}
+
 const IdentifierModel = mongoose.model('Identifier', IdentifierSchema);
 
 module.exports = IdentifierModel;
