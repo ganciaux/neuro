@@ -7,9 +7,7 @@ const articleSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        minlength: 5,
-        maxlength: 60,
-        trim: true
+        trim: true,
     },
     slug: { 
         type: String, 
@@ -19,7 +17,7 @@ const articleSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        maxlength: 1024,
+        trim: true,
     },  
     price: {
         type: Number,
@@ -29,6 +27,10 @@ const articleSchema = new mongoose.Schema({
         type: Number,
         default:0,
         required: [true, 'An article must have a session number'],
+        validate : {
+            validator : Number.isInteger,
+            message : '{VALUE} is not an integer value'
+        }
     }
 }, {
   timestamps: true,

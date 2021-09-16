@@ -1,30 +1,25 @@
 const mongoose = require('mongoose');
 
-const billStatusSchema = new mongoose.Schema({
-  type: {
-    type: String,
-    required: true
-  },
-  code: {
-    type: String,
-    unique: true
-  }
-});
-
 const billSchema = new mongoose.Schema({
   clientId: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Client',
-      required: [true, 'Bill must belong to a client'],
+    type: mongoose.Schema.ObjectId,
+    ref: 'Client',
+    required: [true, 'Bill must belong to a client'],
   },
   orderId: {
-      type: mongoose.Schema.ObjectId,
-      required: [true, 'Bill must belong to an order'],
+    type: mongoose.Schema.ObjectId,
+    ref: 'Order',
+    required: [true, 'Bill must belong to an order'],
   },
   refId: {
     type: mongoose.Schema.ObjectId,
-    ref: 'Identifier',
+    ref: 'Reference',
     required: [true, 'Bill must have a reference'],
+  },
+  ref: {
+    type: String,
+    required: true,
+    trim: true,
   },
   date: {
     type: Date,
@@ -32,16 +27,16 @@ const billSchema = new mongoose.Schema({
   },
   statusId: {
     type: mongoose.Schema.ObjectId,
-    ref: 'BillStatus',
-    required: [true, 'Bill must have a status'],
+    ref: 'Type',
+    required: true,
   },
   price: {
     type: Number,
     default: 0.0,
+    required: true,
   },
   description: {
     type: String,
-    maxlength: 1024,
     trim: true
   },
   articles: [
@@ -77,12 +72,19 @@ const billSchema = new mongoose.Schema({
 });
 
 billSchema.pre('save', async function (next) {
-  this.price = setPrice(this.articles);
+  console.log(this.date)
+  const doc = await Reference.getNewReference("bill", "refId", this.date.getFullYear());
+  this.refId = doc.count;
+  this.ref = utils.getReference(this.date, doc.count );
+  this.price = utils.getArticlesPrice(this.articles);
   next();
 });
 
-const BillStatusModel = mongoose.model('BillStatus', billStatusSchema, 'billstatus');
+billSchema.pre('findOneAndUpdate', function (next) {
+  this._update.price = utils.getArticlesPrice(this._update.articles);
+  next();
+});
+
 const BillModel = mongoose.model('Bill', billSchema);
 
-exports.BillStatusModel = BillStatusModel;
-exports.BillModel = BillModel;
+module.exports = BillModel;

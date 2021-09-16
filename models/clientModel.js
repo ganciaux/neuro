@@ -4,66 +4,51 @@ const { isEmail } = require('validator');
 
 mongoose.plugin(slug);
 
-const clientTypeSchema = new mongoose.Schema({
-    type: {
-      type: String,
-      required: true,
-    },
-    code: {
-      type: String,
-      unique: true
-    }
-});
-
 const clientSchema = new mongoose.Schema({
     slug: { 
         type: String, 
         slug: ["name", "firstname"], 
-        unique: true 
+        unique: true,
+        slugPaddingSize: 3,
     },
     typeId: {
         type: mongoose.Schema.ObjectId,
-        ref: 'ClientType',
-        default: mongoose.Types.ObjectId()
+        ref: 'Type',
+        required: true,
     },
     name: {
         type: String,
         required: true,
-        minlength: 5,
-        maxlength: 60,
         trim: true
     },
     firstname: {
         type: String,
         required: true,
-        minlength: 5,
-        maxlength: 60,
         trim: true
     },
     phone: {
         type: String,
-        maxlength: 32,
+        trim: true
     },
     email: {
         type: String,
         required: true,
         validate: [isEmail],
-        minlength: 5,
         lowercase: true,
         unique: true,
-        trim: true
+        trim: true,
     },
     address: {
         type: String,
-        maxlength: 64,
+        trim: true,
     },
     city: {
         type: String,
-        maxlength: 32,
+        trim: true,
     },
     zip: {
         type: String,
-        maxlength: 32,
+        trim: true,
     },
     birthdate:{
         type: Date,
@@ -71,15 +56,12 @@ const clientSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        maxlength: 1024,
-        trim: true
+        trim: true,
     }
 }, {
     timestamps: true,
 });
 
-const ClientTypeModel = mongoose.model('ClientType', clientSchema);
 const ClientModel = mongoose.model('Client', clientSchema);
 
-exports.ClientTypeModel = ClientTypeModel;
-exports.ClientModel = ClientModel;
+module.exports = ClientModel;

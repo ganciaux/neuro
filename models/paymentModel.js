@@ -1,27 +1,5 @@
 const mongoose = require('mongoose');
 
-const paymentTypeSchema = new mongoose.Schema({
-    type: {
-      type: String,
-      required: true
-    },
-    code: {
-      type: String,
-      unique: true
-    }
-});
-
-const paymentStatusSchema = new mongoose.Schema({
-    type: {
-      type: String,
-      required: true
-    },
-    code: {
-      type: String,
-      unique: true
-    }
-});
-
 const paymentSchema = new mongoose.Schema({
     clientId: {
         type: mongoose.Schema.ObjectId,
@@ -34,15 +12,16 @@ const paymentSchema = new mongoose.Schema({
     },
     typeId: {
         type: mongoose.Schema.ObjectId,
-        ref: 'paymentType'
+        ref: 'Type'
     },
     statusId: {
         type: mongoose.Schema.ObjectId,
-        ref: 'paymentStatus'
+        ref: 'Type'
     },
     price: {
         type: Number,
         default: 0.0,
+        required: true,
     },
     date:{
         type: Date,
@@ -50,17 +29,12 @@ const paymentSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        maxlength: 1024,
         trim: true
     }
 }, {
  timestamps: true,
 });
 
-const PaymentTypeModel = mongoose.model('PaymentType', paymentSchema);
-const PaymentStatusModel = mongoose.model('PaymentStatus', paymentSchema, 'paymentstatus');
 const PaymentModel = mongoose.model('Payment', paymentSchema);
 
-exports.PaymentTypeModel = PaymentTypeModel;
-exports.PaymentStatusModel = PaymentStatusModel;
-exports.PaymentModel = PaymentModel;
+module.exports = PaymentModel;

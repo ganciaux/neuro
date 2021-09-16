@@ -2,47 +2,25 @@ const mongoose = require('mongoose');
 const Reference = require('./referenceModel');
 const utils = require('../utils/utils');
 
-const orderTypeSchema = new mongoose.Schema({
-  type: {
-    type: String,
-    required: true
-  },
-  code: {
-    type: String,
-    unique: true
-  }
-});
-
-const statusTypeSchema = new mongoose.Schema({
-  type: {
-    type: String,
-    required: true
-  },
-  code: {
-    type: String,
-    unique: true
-  }
-});
-
 const orderSchema = new mongoose.Schema({
   clientId: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Client',
-      required: [true, 'Order must belong to a client']
+    type: mongoose.Schema.ObjectId,
+    ref: 'Client',
+    required: [true, 'Order must belong to a client'],
   },
   parentId: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Order'
+    type: mongoose.Schema.ObjectId,
+    ref: 'Order',
   },
   typeId: {
     type: mongoose.Schema.ObjectId,
-    ref: 'OrderType'
+    ref: 'Type',
   },
   statusId: {
     type: mongoose.Schema.ObjectId,
-    ref: 'StatusType'
+    ref: 'Type',
   },
-  orderId: {
+  refId: {
     type: Number,
     default: 0,
     required: true,
@@ -53,33 +31,35 @@ const orderSchema = new mongoose.Schema({
   },
   ref: {
     type: String,
-    trim: true
+    trim: true,
   },
   date:{
     type: Date,
-    default: Date.now()
+    default: Date.now(),
   },
   description: {
-      type: String,
-      required: false,
-      minlength: 5,
-      trim: true
+    type: String,
+    trim: true,
   },
   sessions: {
-      type: Number,
-      default: 0.0,
-      required: [true, 'A Order must have a session number'],
+    type: Number,
+    default: 0.0,
+    required: [true, 'A Order must have a session number'],
+    validate : {
+      validator : Number.isInteger,
+      message : '{VALUE} is not an integer value'
+    }
   },
   price: {
-      type: Number,
-      default: 0.0,
+    type: Number,
+    default: 0.0,
   },
   articles: [
       {
         article: {
           type: mongoose.Schema.ObjectId,
           ref: 'Article',
-          required: true
+          required: true,
         },
         quantity: {
           type: Number,
@@ -104,13 +84,12 @@ const orderSchema = new mongoose.Schema({
     ],
 }, {
   timestamps: true,
-}
-);
+});
 
 orderSchema.pre('save', async function (next) {
   console.log(this.date)
-  const doc = await Reference.getNewReference("order", "orderId", this.date.getFullYear());
-  this.orderId = doc.count;
+  const doc = await Reference.getNewReference("order", "refId", this.date.getFullYear());
+  this.refId = doc.count;
   this.ref = utils.getReference(this.date, doc.count );
   this.price = utils.getArticlesPrice(this.articles);
   next();
@@ -121,5 +100,6 @@ orderSchema.pre('findOneAndUpdate', function (next) {
   next();
 });
 
-exports.OrderType = mongoose.model('OrderType', orderTypeSchema);
-exports.Order = mongoose.model('Order', orderSchema);
+const OrderModel = mongoose.model('Order', orderSchema);
+
+module.exports = OrderModel;

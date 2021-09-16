@@ -1,16 +1,5 @@
 const mongoose = require('mongoose');
 
-const sessionTypeSchema = new mongoose.Schema({
-  type: {
-    type: String,
-    required: true
-  },
-  code: {
-    type: String,
-    unique: true
-  }
-});
-
 const sessionSchema = new mongoose.Schema({
   clientId: {
     type: mongoose.Schema.ObjectId,
@@ -21,32 +10,26 @@ const sessionSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'Order',
   },
-  sessionTypeId: {
+  typeId: {
     type: mongoose.Schema.ObjectId,
-    ref: 'Order',
+    ref: 'Type',
+  },
+  statusId: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Type',
   },
   date:{
     type: Date,
     default: Date.now(),
   },
-  status: {
-    type: String,
-    required: true,
-    enum: {
-      values: ['Annulé', 'Validé'],
-    },
-  },
   description: {
     type: String,
-    maxlength: 1024,
     trim: true
   }
 },{
   timestamps: true,
 });
 
-const SessionTypeModel = mongoose.model('SessionType', sessionTypeSchema);
 const SessionModel = mongoose.model('Session', sessionSchema);
 
-exports.SessionTypeModel = SessionTypeModel;
-exports.SessionModel = SessionModel;
+module.exports = SessionModel;
