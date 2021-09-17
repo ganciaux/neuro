@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const slug = require('mongoose-slug-updater');
 const { isEmail } = require('validator');
+const Type = require('../models/typeModel');
 
 mongoose.plugin(slug);
 
@@ -61,6 +62,14 @@ const clientSchema = new mongoose.Schema({
 }, {
     timestamps: true,
 });
+
+clientSchema.pre(/^find/, function (next) {
+    this.populate({
+      path: 'typeId',
+      select: 'label',
+    });
+    next();
+  });
 
 const ClientModel = mongoose.model('Client', clientSchema);
 

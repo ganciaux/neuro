@@ -1,4 +1,8 @@
 const mongoose = require('mongoose');
+const Article = require('../models/articleModel');
+const Client = require('../models/clientModel');
+const Order = require('../models/orderModel');
+const Type = require('../models/typeModel');
 
 const billSchema = new mongoose.Schema({
   clientId: {
@@ -12,9 +16,13 @@ const billSchema = new mongoose.Schema({
     required: [true, 'Bill must belong to an order'],
   },
   refId: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'Reference',
-    required: [true, 'Bill must have a reference'],
+    type: Number,
+    default: 0,
+    required: true,
+    validate : {
+      validator : Number.isInteger,
+      message : '{VALUE} is not an integer value'
+    }
   },
   ref: {
     type: String,
@@ -41,7 +49,7 @@ const billSchema = new mongoose.Schema({
   },
   articles: [
     {
-      article: {
+      articleId: {
         type: mongoose.Schema.ObjectId,
         ref: 'Article',
         required: true
@@ -82,6 +90,14 @@ billSchema.pre('save', async function (next) {
 
 billSchema.pre('findOneAndUpdate', function (next) {
   this._update.price = utils.getArticlesPrice(this._update.articles);
+  next();
+});
+
+billSchema.pre(/^find/, function (next) {
+  this.populate('clientId')
+  .populate('orderId')
+  .populate('statusId')
+  .populate('articleId');
   next();
 });
 

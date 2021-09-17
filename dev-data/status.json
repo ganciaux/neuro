@@ -1,0 +1,17 @@
+[{"model":"bill", "field":"statusId", "label": "Non payée", "code": "UNPAID"}, 
+{"model":"bill", "field":"statusId", "label": "Partiellement", "code": "INPROGRESS"},
+{"model":"bill", "field":"statusId", "label": "Payée", "code": "PAID"},
+
+{"model":"order", "field":"statusId", "label": "En cours", "code": "INPROGRESS"},
+{"model":"order", "field":"statusId", "label": "Annulée", "code": "CANCELLED"},
+{"model":"order", "field":"statusId", "label": "Validée", "code": "OK"},
+
+{"model":"payment", "field":"statusId", "label": "En cours", "code": "INPROGRESS"},
+{"model":"payment", "field":"statusId", "label": "Annulée", "code": "CANCELLED"},
+{"model":"payment", "field":"statusId", "label": "Validée", "code": "OK"},
+
+{"model":"session", "field":"statusId", "label": "Plannifié", "code": "PLANNED"},
+{"model":"session", "field":"statusId", "label": "Annulé", "code": "CANCELLED"},
+{"model":"session", "field":"statusId", "label": "Validé", "code": "OK"}
+
+]

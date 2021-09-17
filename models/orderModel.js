@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const Reference = require('./referenceModel');
 const utils = require('../utils/utils');
+const Article = require('../models/articleModel');
+const Client = require('../models/clientModel');
+const Order = require('../models/orderModel');
+const Type = require('../models/typeModel');
 
 const orderSchema = new mongoose.Schema({
   clientId: {
@@ -11,10 +15,6 @@ const orderSchema = new mongoose.Schema({
   parentId: {
     type: mongoose.Schema.ObjectId,
     ref: 'Order',
-  },
-  typeId: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'Type',
   },
   statusId: {
     type: mongoose.Schema.ObjectId,
@@ -97,6 +97,14 @@ orderSchema.pre('save', async function (next) {
 
 orderSchema.pre('findOneAndUpdate', function (next) {
   this._update.price = utils.getArticlesPrice(this._update.articles);
+  next();
+});
+
+orderSchema.pre(/^find/, function (next) {
+  this.populate('clientId')
+  .populate('parentId')
+  .populate('statusId')
+  .populate('articleId');
   next();
 });
 

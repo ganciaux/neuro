@@ -18,14 +18,13 @@ const typeSchema = new mongoose.Schema({
     },
     code: {
         type: String,
-        unique: true
-    },
+    },/*
     slug: {
         type: String, 
         slug: ["model", "code"], 
         unique: true,
         slugPaddingSize: 3 
-    }
+    }*/
 }, {
   timestamps: true,
 });

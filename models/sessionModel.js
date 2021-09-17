@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const Client = require('../models/clientModel');
+const Order = require('../models/orderModel');
+const Type = require('../models/typeModel');
 
 const sessionSchema = new mongoose.Schema({
   clientId: {
@@ -28,6 +31,14 @@ const sessionSchema = new mongoose.Schema({
   }
 },{
   timestamps: true,
+});
+
+sessionSchema.pre(/^find/, function (next) {
+  this.populate('clientId')
+  .populate('orderId')
+  .populate('statusId')
+  .populate('typeId');
+  next();
 });
 
 const SessionModel = mongoose.model('Session', sessionSchema);

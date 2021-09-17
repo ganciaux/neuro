@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const Client = require('../models/clientModel');
+const Bill = require('../models/billModel');
+const Type = require('../models/typeModel');
 
 const paymentSchema = new mongoose.Schema({
     clientId: {
@@ -34,6 +37,14 @@ const paymentSchema = new mongoose.Schema({
 }, {
  timestamps: true,
 });
+
+paymentSchema.pre(/^find/, function (next) {
+    this.populate('clientId')
+    .populate('billId')
+    .populate('statusId')
+    .populate('typeId');
+    next();
+  });
 
 const PaymentModel = mongoose.model('Payment', paymentSchema);
 
