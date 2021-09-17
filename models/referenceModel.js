@@ -13,7 +13,6 @@ const ReferenceSchema = new mongoose.Schema({
         type: Number,
         default: 0,
         required: true,
-        unique: true,
         validate : {
             validator : Number.isInteger,
             message   : '{VALUE} is not an integer value'
@@ -28,15 +27,13 @@ const ReferenceSchema = new mongoose.Schema({
     timestamps: true,
 });
 
-ReferenceSchema.index({ "model": 1, "field": 1, "year": 1}, { "unique": true });
+ReferenceSchema.index({"model": 1, "field": 1, "year": 1}, { "unique": true });
 
 ReferenceSchema.statics.getNewReference = async function getNewReference(model, field, year){
-    console.log(model, field, year)
     const doc = await this.findOneAndUpdate(
         { model, field, year },
         { $inc: { count: 1 } },
         {upsert: true, new: true}).select('model field count -_id');
-    console.log(doc)
     return doc;
 }
 

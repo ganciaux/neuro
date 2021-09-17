@@ -1,103 +1,14 @@
-client
--------
-type: madame, monsieur, etablissement,...
-name
-firstname
-phone
-mail
-address
-city
-zip
-origin
-country
-birthdate
-description
-created_at
-
-
-order_type
---------------
-type: autre, consultation neuropsychologique, sceance de remédiation cognitive, evalutation psychométrique, evaluation neuropsycologique petite/grande, atelier mémoire, devis
-code
-
-
-order
+Charges
 ------
-id_client
-id_order_type
-id_order_ref
-status: en cours, annulée, validée
-description
-sessions
-price
-[articles]{
-	id_article
-	quantity
-	price
-}
-create_at
-
-
-article
---------
-name
-description
-price
-appointments
-
-
-session_type
-------------------
-type: defaut, consultation, remédiation, restitution, evalutation, bilan, suivi, synthèse
-
-
-session  
-----------
-id_order
-id_client
-id_session_type
-date
-status
-description
-create_at
-
-
-payment
------------
-id_client
-id_bill
-type: cheque, espece, carte, virement
-amount
-date
-status: comptabilisé, en attente
-
-
-/**************************************************/
-
-
-bill
-----
-id_client
-id_order
-ref
-date
-status: non payée, partiellement, payée
-price
-
-
-bill_data
------------
-id_billl
-id_article
-quantity
-price
-
+Fournitures
+Loyer 120
+Matériels
+URSSAF
 
 bundle
 ---------
 name
 price
-
 
 bundle_data
 ----------------

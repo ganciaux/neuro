@@ -16,8 +16,20 @@ const typeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    code: {
+    short: {
         type: String,
+    },
+    css: {
+        type: String,
+    },
+    value: {
+        type: Number,
+        default: 0,
+        required: true,
+        validate : {
+            validator : Number.isInteger,
+            message : '{VALUE} is not an integer value'
+        }
     },/*
     slug: {
         type: String, 

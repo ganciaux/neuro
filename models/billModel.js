@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
-const Article = require('../models/articleModel');
-const Client = require('../models/clientModel');
-const Order = require('../models/orderModel');
-const Type = require('../models/typeModel');
+const Article = require('./articleModel');
+const Client = require('./clientModel');
+const Order = require('./orderModel');
+const Reference = require('./referenceModel');
+const Type = require('./typeModel');
+const utils = require('../utils/utils');
 
 const billSchema = new mongoose.Schema({
   clientId: {
@@ -26,7 +28,6 @@ const billSchema = new mongoose.Schema({
   },
   ref: {
     type: String,
-    required: true,
     trim: true,
   },
   date: {
@@ -80,7 +81,6 @@ const billSchema = new mongoose.Schema({
 });
 
 billSchema.pre('save', async function (next) {
-  console.log(this.date)
   const doc = await Reference.getNewReference("bill", "refId", this.date.getFullYear());
   this.refId = doc.count;
   this.ref = utils.getReference(this.date, doc.count );
@@ -90,14 +90,6 @@ billSchema.pre('save', async function (next) {
 
 billSchema.pre('findOneAndUpdate', function (next) {
   this._update.price = utils.getArticlesPrice(this._update.articles);
-  next();
-});
-
-billSchema.pre(/^find/, function (next) {
-  this.populate('clientId')
-  .populate('orderId')
-  .populate('statusId')
-  .populate('articleId');
   next();
 });
 

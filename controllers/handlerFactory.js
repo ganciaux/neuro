@@ -45,7 +45,6 @@ exports.createOne = (Model) =>
 
 exports.getOne = (Model, populateOptions) =>
   catchAsync(async (req, res, next) => {
-    console.log(Model.collection.collectionName);
     if (ObjectId.isValid(req.params.id)==true)
       query = Model.findById(req.params.id);
     else
@@ -54,8 +53,6 @@ exports.getOne = (Model, populateOptions) =>
     if (populateOptions) query = query.populate(populateOptions);
 
     let doc = await query;
-
-    console.log(doc)
 
     if (!doc) {
       return next(new AppError('No document found with this id', 404));
@@ -74,7 +71,7 @@ exports.getOne = (Model, populateOptions) =>
     });
   });
 
-exports.getAll = (Model) =>
+exports.getAll = (Model, populateOptions, selected) =>
   catchAsync(async (req, res, next) => {
     let filter = {};
     //SPECIFIC PARAMS
@@ -85,7 +82,11 @@ exports.getAll = (Model) =>
       .sort()
       .limitFields()
       .pagination();
-    const docs = await features.query;
+
+    if (populateOptions) query = features.query.populate(populateOptions).select(selected);
+    else query = features.query;
+
+    const docs = await query;
     //const docs = await features.query.explain();
 
     //SEND RESPONSE

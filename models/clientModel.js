@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const slug = require('mongoose-slug-updater');
 const { isEmail } = require('validator');
-const Type = require('../models/typeModel');
+const Type = require('./typeModel');
+const utils = require('../utils/utils');
 
 mongoose.plugin(slug);
 
@@ -61,15 +62,51 @@ const clientSchema = new mongoose.Schema({
     }
 }, {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
 });
 
-clientSchema.pre(/^find/, function (next) {
-    this.populate({
-      path: 'typeId',
-      select: 'label',
-    });
-    next();
-  });
+clientSchema.virtual('bills', {
+    ref: 'Bill',
+    foreignField: 'clientId',
+    localField: '_id',
+});
+
+clientSchema.virtual('orders', {
+    ref: 'Order',
+    foreignField: 'clientId',
+    localField: '_id',
+});
+
+clientSchema.virtual('payments', {
+    ref: 'Payment',
+    foreignField: 'clientId',
+    localField: '_id',
+});
+
+clientSchema.virtual('sessions', {
+    ref: 'Session',
+    foreignField: 'clientId',
+    localField: '_id',
+});
+
+clientSchema
+.virtual('_name')
+.get(function () {
+  return `${this.name} ${this.firstname}`;
+});
+
+clientSchema
+.virtual('_address')
+.get(function () {
+    return `${this.address} ${this.zip} ${this.city}`;
+});
+
+clientSchema
+.virtual('_birthdate')
+.get(function () {
+    return utils.formatDate(this.birthdate);
+});
 
 const ClientModel = mongoose.model('Client', clientSchema);
 

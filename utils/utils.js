@@ -1,3 +1,5 @@
+const dateFormat = require('dateformat');
+
 const charPad = (num, places, char) => {
     let defaultChar='0';
     if (char) defaultChar=char;
@@ -16,9 +18,14 @@ const getArticlesPrice = (articles) => {
     let price = 0.0;
     articles.forEach(element => price += Math.round(element.quantity*element.unitCost*100)/100 );
     return price;
-}
+};
 
-  
+const formatDate = (date) => {
+    //console.log(dateFormat(date.toLocaleDateString("fr-FR"), "dddd, mmmm dS, yyyy, h:MM:ss TT"));
+    return `${date.getFullYear()}/${charPad(date.getMonth()+1,2)}/${charPad(date.getDay(),2)}`;
+};
+
 exports.charPad = charPad;
 exports.getReference = getReference;
 exports.getArticlesPrice = getArticlesPrice;
+exports.formatDate = formatDate;

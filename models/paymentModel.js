@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const Client = require('../models/clientModel');
-const Bill = require('../models/billModel');
-const Type = require('../models/typeModel');
+const Client = require('./clientModel');
+const Bill = require('./billModel');
+const Type = require('./typeModel');
 
 const paymentSchema = new mongoose.Schema({
     clientId: {
@@ -15,11 +15,13 @@ const paymentSchema = new mongoose.Schema({
     },
     typeId: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Type'
+        ref: 'Type',
+        required: true,
     },
     statusId: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Type'
+        ref: 'Type',
+        required: true,
     },
     price: {
         type: Number,
@@ -37,14 +39,6 @@ const paymentSchema = new mongoose.Schema({
 }, {
  timestamps: true,
 });
-
-paymentSchema.pre(/^find/, function (next) {
-    this.populate('clientId')
-    .populate('billId')
-    .populate('statusId')
-    .populate('typeId');
-    next();
-  });
 
 const PaymentModel = mongoose.model('Payment', paymentSchema);
 
