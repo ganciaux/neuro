@@ -23,6 +23,16 @@ const Navbar = () => {
                             Clients
                         </NavLink>
                     </li>
+                    <li>
+                        <NavLink exact to="/payments">
+                            Paiements
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink exact to="/sessions">
+                            Rendez-vous
+                        </NavLink>
+                    </li>
                 </ul>    
             </div>
         </nav>
