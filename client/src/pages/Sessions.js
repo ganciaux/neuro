@@ -6,7 +6,7 @@ const Model = ({title, model}) => {
     const [items, setItems] = useState([]);
   
     useEffect(() => {
-      fetch("http://localhost:5000/api/clients")
+      fetch(`http://localhost:5000/api/sessions`)
         .then(res => res.json())
         .then(
           (result) => {
@@ -26,12 +26,15 @@ const Model = ({title, model}) => {
         return <div>Chargement...</div>;
     } else {
         return (
-        <div>
-            title:{title} / Model: {model}
+          <div className="neuro-page-top-margin" >
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item"><a href="/">Home</a></li>
+              <li className="breadcrumb-item active">Rendez-vous</li>
+            </ol>
             <ul>
                 {items.map(item => (
-                <li key={item.name}>
-                    {item.name} {item.firstname}
+                <li key={item._id}>
+                    {item.date} {item.firstname}
                 </li>
                 ))}
             </ul>
