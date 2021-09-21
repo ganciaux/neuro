@@ -17,6 +17,7 @@ const Model = ({model, label}) => {
       .then((result) => {
         setIsLoaded(true);
         setItems(result.data.data);
+        console.log(result.data.data)
       },
       (error) => {
         setIsLoaded(true);

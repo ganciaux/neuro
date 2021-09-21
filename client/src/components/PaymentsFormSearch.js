@@ -6,16 +6,13 @@ import React from 'react';
 const PaymentsFormSearch = () => {
 
     return (
-        <form className="form-inline">
-            <div className="form-group mb-2">
-                <label for="clientName" className="sr-only">Email</label>
-                <input type="text" readonly className="form-control-plaintext" id="clientName" value=""/>
+        <form>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
             </div>
-            <div className="form-group mx-sm-3 mb-2">
-                <label for="inputPassword2" className="sr-only">Password</label>
-                <input type="password" className="form-control" id="inputPassword2" placeholder="Password"/>
-            </div>
-            <button type="submit" className="btn btn-primary mb-2">Chercher</button>
+            <button type="submit" class="btn btn-primary">Chercher</button>
         </form>
     );
 }

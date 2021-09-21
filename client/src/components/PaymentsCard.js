@@ -2,14 +2,14 @@
 import React from 'react';
 //import formatDate from '../helpers/format-date';
 //import formatType from '../helpers/format-type';
-import PaymentsFormSearch from '../components/PaymentsCard.js';
+import PaymentsFormSearch from '../components/PaymentsFormSearch.js';
 
 const PaymentsCard = ({payments}) => {
 
     return (
         <div className="container"> 
-            <div className="row">
-                <PaymentsFormSearch></PaymentsFormSearch>
+        <div className="row">
+                <PaymentsFormSearch/>
             </div>
         <div className="row">
         {
@@ -29,6 +29,7 @@ const PaymentsCard = ({payments}) => {
             )
         }
                       </div>
+                      
             </div>
     );
 }
