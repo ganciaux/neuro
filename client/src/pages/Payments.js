@@ -1,48 +1,46 @@
 import React, { useEffect, useState } from 'react';
+import Breadcrumb from '../components/Breadcrumb.js';
+import Loading from '../components/Loading.js';
 import NeuroServices from '../services/NeuroServices';
 
 const Payments = ({title, model}) => {
 
-    const [error, setError] = useState(null);
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [items, setItems] = useState([]);
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [items, setItems] = useState([]);
 
-    useEffect(() => {
-      NeuroServices.getModelList(model)
-      .then((result) => {
-        setIsLoaded(true);
-        setItems(result.data.data);
-      },
-      (error) => {
-        setIsLoaded(true);
-        setError(error);
-      });
-    }, []);
+  useEffect(() => {
+    NeuroServices.getModelList(model)
+    .then((result) => {
+      setIsLoaded(true);
+      setItems(result.data.data);
+    },
+    (error) => {
+      setIsLoaded(true);
+      setError(error);
+    });
+  }, [model]);
   
-    if (error) {
-        return <div>Erreur : {error.message}</div>;
-    } else if (!isLoaded) {
-        return <div>Chargement...</div>;
-    } else {
-        return (
-          <div className="neuro-page-top-margin" >
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item"><a href="/">Home</a></li>
-              <li className="breadcrumb-item active">Paiements</li>
-            </ol>
-            <ul>
+  if (error) {
+      return <div>Erreur : {error.message}</div>;
+  } else if (!isLoaded) {
+      return <Loading/>;
+  } else {
+      return (
+        <div className="neuro-page-top-margin" >
+          <Breadcrumb breadcrumb={['Paiements']}/>
+          <div className="container"> 
+            <div className="row">
                 {items.map(item => (
-                <li key={item._id}>
+                <div key={item._id}>
                     {item.date} {item.price}
-                </li>
+                </div>
                 ))}
-            </ul>
+            </div>
+          </div>
         </div>
-        
         );
     }
-
-   
 }
 
 export default Payments;

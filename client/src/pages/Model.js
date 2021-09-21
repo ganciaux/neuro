@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../components/Breadcrumb.js';
-import ClientsCard from '../components/ClientsCard.js';
 import Loading from '../components/Loading.js';
+import ClientsCard from '../components/ClientsCard.js';
+import PaymentsCard from '../components/PaymentsCard.js';
 import NeuroServices from '../services/NeuroServices';
+import PageNotFound from './PageNotFound.js';
 
-const Clients = ({title, model}) => {
+const Model = ({model, label}) => {
 
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -28,15 +30,14 @@ const Clients = ({title, model}) => {
         return <Loading/>;
     } else {
         return (
-          <div className="neuro-page-top-margin" >
-            <Breadcrumb breadcrumb={['Patients']}/>
-            <div className="container"> 
-              <div className="row">
-                {items.map(item => (
-                    <ClientsCard key={item._id} client={item}></ClientsCard>
-                ))}
-              </div>
-            </div>
+          <div className="neuro-top-margin" >
+            <Breadcrumb breadcrumb={[label]}/>
+              {
+                { 'clients': <ClientsCard clients={items}/>,
+                'payments': <PaymentsCard payments={items}/>,
+                'sessions': <div>Sessions todo</div>
+                }[model] || <PageNotFound/>
+              }
           </div>
         );
     }
@@ -44,4 +45,4 @@ const Clients = ({title, model}) => {
    
 }
 
-export default Clients;
+export default Model;

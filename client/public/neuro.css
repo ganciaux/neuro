@@ -1,3 +1,15 @@
-.neuro-page-top-margin {
-  margin: 20px;
+.neuro-top-margin {
+  margin: 1rem;;
+}
+
+.neuro-icon{
+  height: 24px;
+}
+
+.neuro-btn-list{
+  margin-bottom: 1rem;
+}
+
+.neuro-btn{
+  margin-right: 5px;
 }

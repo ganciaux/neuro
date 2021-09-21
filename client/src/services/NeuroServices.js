@@ -1,10 +1,13 @@
 export default class NeuroService {
  
-    static getModelList(model) {
-        return fetch(`http://localhost:5000/api/${model}`)
-        .then(res => res.json())
-        .catch(error => this.handleError(error));
-    }
+  static getModelList(model, query) {
+    let url = `http://localhost:5000/api/${model}`;
+    if (query)
+      url+=`/?${query}`
+    return fetch(url)
+    .then(res => res.json())
+    .catch(error => this.handleError(error));
+  }
  
     static getModel(model, id) {
         return fetch(`http://localhost:5000/api/${model}/${id}`)

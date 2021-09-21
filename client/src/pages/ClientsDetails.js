@@ -26,7 +26,7 @@ const ClientsDetails = ({model, match}) => {
       return <Loading/>;
     } else {
         return (
-          <div className="neuro-page-top-margin" >
+          <div className="neuro-top-margin" >
             <Breadcrumb breadcrumb={['Patients', 'Details']}/>
             <div>{item._name}</div>
           </div>

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import Breadcrumb from '../components/Breadcrumb.js';
+import Loading from '../components/Loading.js';
 
 const Model = ({title, model}) => {
     const [error, setError] = useState(null);
@@ -21,25 +23,23 @@ const Model = ({title, model}) => {
     }, [])
 
     if (error) {
-        return <div>Erreur : {error.message}</div>;
-    } else if (!isLoaded) {
-        return <div>Chargement...</div>;
-    } else {
-        return (
-          <div className="neuro-page-top-margin" >
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item"><a href="/">Home</a></li>
-              <li className="breadcrumb-item active">Rendez-vous</li>
-            </ol>
-            <ul>
+      return <div>Erreur : {error.message}</div>;
+  } else if (!isLoaded) {
+      return <Loading/>;
+  } else {
+      return (
+        <div className="neuro-page-top-margin" >
+          <Breadcrumb breadcrumb={['Rendez-vous']}/>
+          <div className="container"> 
+            <div className="row">
                 {items.map(item => (
-                <li key={item._id}>
-                    {item.date} {item.firstname}
-                </li>
+                <div key={item._id}>
+                    {item.date}
+                </div>
                 ))}
-            </ul>
+            </div>
+          </div>
         </div>
-        
         );
     }
 }
