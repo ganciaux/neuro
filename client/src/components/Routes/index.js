@@ -9,6 +9,7 @@ import TestApp from '../../pages/TestApp';
 
 import Navbar from '../Navbar';
 
+
 const index = () => {
   return (
     <Router>
@@ -16,11 +17,11 @@ const index = () => {
       <Switch>
         <Route path="/" exact component={Home}></Route>
         <Route path="/payment" exact component={Clients}></Route>
-        <Route exact path="/clients" render={(props) => <Model {...props} model={'clients'} label={'Patients'}/>} />
+        <Route exact path="/clients" render={(props) => <Clients {...props} model={'clients'} label={'Patients'}/>} />
         <Route exact path="/clients/:id" render={(props) => <ClientsDetails {...props} model={'clients'}/>} /> 
         <Route exact path="/payments" render={(props) => <Model {...props} model={'payments'} label={'Paiements'}/>} />        
         <Route exact path="/sessions" render={(props) => <Model {...props} model={'sessions'} label={'Rendez-vous'}/>} />        
-        <Route exact path="/test" render={(props) => <TestApp {...props}/>} />
+        <Route exact path="/test" render={(props) => <TestApp {...props} />} />
         <Route component={PageNotFound}></Route>
         <Redirect to="/"></Redirect>
       </Switch>
