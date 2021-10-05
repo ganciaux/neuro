@@ -1,3 +1,3 @@
 export const ClientCreate = () => {
-    return null;
+    return 'test';
 }

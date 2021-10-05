@@ -58,6 +58,10 @@ function Clients() {
         )}
         name="birthday"
       />
+      <input
+ name="date"
+ type="datetime-local"
+/>
       <button disabled={ isSubmitting } type="submit">S'inscrire</button>
     </form>
   );

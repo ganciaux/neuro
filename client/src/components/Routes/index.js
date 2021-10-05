@@ -2,14 +2,16 @@ import React from 'react'
 import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom'
 import Home from '../../pages/Home';
 import Model from '../../pages/Model';
-import ClientsList from "../../pages/ClientsList"
-import ClientCreate from "../../pages/ClientCreate"
+import {ClientsList} from "../../pages/ClientsList"
+import {ClientCreate} from "../../pages/ClientCreate"
+import { ClientUpdate } from '../../pages/ClientUpdate';
 import Clients from '../../pages/Clients';
 import ClientsDetails from '../../pages/ClientsDetails';
 import PageNotFound from '../../pages/PageNotFound';
 import TestApp from '../../pages/TestApp';
 
 import Navbar from '../Navbar';
+
 
 
 const index = () => {
@@ -26,6 +28,9 @@ const index = () => {
         </Route>
         <Route exact path="/clients-create">
           <ClientCreate/>
+        </Route>
+        <Route exact path="/clients-update">
+          <ClientUpdate/>
         </Route>
         <Route exact path="/payments" render={(props) => <Model {...props} model={'payments'} label={'Paiements'} />} />
         <Route exact path="/sessions" render={(props) => <Model {...props} model={'sessions'} label={'Rendez-vous'}/>} />        

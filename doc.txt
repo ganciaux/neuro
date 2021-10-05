@@ -3,6 +3,7 @@ https://bootswatch.com/pulse
 https://www.robinwieruch.de/react-hooks-fetch-data
 https://reactdatepicker.com/
 https://github.com/date-fns/date-fns
+https://blog.arcoptimizer.com/comment-creer-des-formulaires-avec-react-the-easy-way
 
 Charges
 ------
