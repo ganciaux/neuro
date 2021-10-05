@@ -1,56 +1,65 @@
-import React, { useEffect, useState } from 'react';
-import Breadcrumb from '../components/Breadcrumb.js';
-import { useQuery } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
-import ClientCard from '../components/ClientsCard'
+import React from 'react';
+import { useForm, Controller } from "react-hook-form"
+import DatePicker, { CalendarContainer } from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+
+const schema = yup.object({
+  username: yup.string().required(),
+  email: yup.string().email().required(),
+});
+
+const wait = function (duration = 1000) {
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, duration)
+  })
+}
 
 function Clients() {
-  const [url, setUrl] = useState("http://localhost:5000/api/clients")
-  const fetchClients = () => fetch(url).then((res) => res.json());
-
-  const { isLoading, error, data, isFetching } = useQuery(["user", { url }], fetchClients);
-
-  const sortByAlpha = () => {
-    setUrl("http://localhost:5000/api/clients/?limit=2");
+  const { register, handleSubmit, formState, setError, control } = useForm({
+    mode: 'onTouched',
+    resolver: yupResolver(schema)
+  })
+  const { isSubmitting, isSubmitted, isSubmitSuccessful, errors } = formState;
+  const onSubmit = async (data) => {
+    await wait(2000);
+    console.log(data);
+    /*setError('username', {
+      type: 'manual',
+      message: "erreur serveur"
+    })*/
   }
 
-  const sortBySession = () => {
-    setUrl("http://localhost:5000/api/clients/?limit=1");
+  if (isSubmitSuccessful) {
+    console.log('redirect')  
   }
-  
-  if (isLoading) return "Loading...";
 
-  if (error) return "An error has occurred: " + error.message;
+  console.log(errors);
 
   return (
-      <div className="container"> 
-        <div className="neuro-btn-list">
-        <button type="button" className="btn btn-primary neuro-btn" onClick={ sortByAlpha}>Alphabéthique</button>
-            <button type="button" className="btn btn-primary neuro-btn" onClick={ sortBySession}>Rendez-vous</button>
-        </div>
-        <div className="row">
-        {
-            data.data.data.map(client => (
-                <div key={client._id} className="col-6 col-sm-4">
-                    <div className="card text-white bg-secondary mb-3">
-                        <div className="card-header"><a href={`clients/${client.slug}`}>{client._name}</a></div>
-                        <div className="card-body">
-                            {/*<h4 className="card-title">Secondary card title</h4>*/}
-                            <p className="card-text">
-                                <span>rdv: prochain rdv</span><br/>
-                                <span>rdv: dernier rdv <span className="badge bg-primary rounded-pill">2/4</span></span><br/>
-                                <span>status paiment</span><br/>
-                                <span>commande en cours</span><br/>
-                            </p>
-                        </div>
-                    </div>
-                </div>)
-            )
-        }
-      </div>
-      <div>{isFetching ? "Updating..." : ""}</div>
-      <ReactQueryDevtools initialIsOpen />
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      {isSubmitSuccessful && <div className="alert alert-success">Merci pour l'inscription</div>}
+      <input name="username" {...register('username')} />
+      {errors.username && <span>{ errors.username.message}</span>}
+      <input name="email" {...register('email')} />
+      {formState.errors.email && <span>{ errors.email.message}</span>}
+      <Controller
+        control={control}
+        rules={{
+         required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <DatePicker
+            onBlur={onBlur}
+            onChange={onChange}
+            selected={value}
+          />
+        )}
+        name="birthday"
+      />
+      <button disabled={ isSubmitting } type="submit">S'inscrire</button>
+    </form>
   );
 }
 
