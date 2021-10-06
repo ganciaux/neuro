@@ -3,10 +3,9 @@ import Loader from "react-loader-spinner"
 
 export const ClientsForm = ({ defaultValues, onFormSubmit, isLoading }) => {
     const { register, handleSubmit, isSubmitting } = useForm({ defaultValues })
-    
+
     const onSubmit = handleSubmit((data) => {
-        //onFormSubmit(data)
-        console.log(data);
+        onFormSubmit(data)
     });
 
     return (

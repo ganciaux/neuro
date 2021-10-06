@@ -7,11 +7,16 @@ import { ClientsForm } from "../../components/ClientsForm";
 export const ClientUpdate = () => {
     const { id } = useParams();
     const history = useHistory();
-    const { data, error, isLoading, isError } = useQuery(["clients", { id }, updateClient]);
-    const {mutateAsync, isLoading: isMutating } = useMutation(ClientUpdate)
+    const { data, error, isLoading, isError } = useQuery(
+        ["clients", { id }],
+         getClient);
+
+    const {mutateAsync, isLoading: isMutating } = useMutation(updateClient)
+
     const onFormSubmit = async (data) => {
+        console.log("Before mutateAsync ")
         await mutateAsync({ ...data, id })
-        history.push("/")
+        history.push("/clients-list")
     }
 
     if (isLoading){
@@ -21,5 +26,5 @@ export const ClientUpdate = () => {
     if (isError) {
         return <div>{error.message}</div>
     }
-    return <ClientsForm defaultValues={data} onFormSubmit={onFormSubmit} isLoading={ isMutating}></ClientsForm>;
+    return <ClientsForm defaultValues={data.data} onFormSubmit={onFormSubmit} isLoading={ isMutating}></ClientsForm>;
 }
