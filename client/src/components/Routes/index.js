@@ -29,7 +29,7 @@ const index = () => {
         <Route exact path="/clients-create">
           <ClientCreate/>
         </Route>
-        <Route exact path="/clients-update">
+        <Route exact path="/clients-update/:id">
           <ClientUpdate/>
         </Route>
         <Route exact path="/payments" render={(props) => <Model {...props} model={'payments'} label={'Paiements'} />} />

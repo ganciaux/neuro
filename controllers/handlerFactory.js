@@ -26,9 +26,7 @@ exports.updateOne = (Model) =>
     }
     res.status(200).json({
       status: 'success',
-      data: {
-        data: doc,
-      },
+      data: doc,
     });
   });
 
@@ -37,9 +35,7 @@ exports.createOne = (Model) =>
     const newDoc = await Model.create(req.body);
     res.status(201).json({
       status: 'success',
-      data: {
-        data: newDoc,
-      },
+      data: newDoc,
     });
   });
 
@@ -65,9 +61,7 @@ exports.getOne = (Model, populateOptions) =>
     
     res.status(200).json({
       status: 'success',
-      data: {
-        data: doc,
-      },
+      data: doc,
     });
   });
 
@@ -93,8 +87,6 @@ exports.getAll = (Model, populateOptions, selected) =>
     res.status(200).json({
       status: 'success',
       results: docs.length,
-      data: { 
-        data: docs 
-      },
+      data: docs
     });
   });
