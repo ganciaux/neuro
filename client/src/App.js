@@ -8,6 +8,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Routes />
+      <ReactQueryDevtools/>
     </QueryClientProvider>
   );
 }

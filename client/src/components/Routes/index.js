@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom'
 import Home from '../../pages/Home';
 import Model from '../../pages/Model';
@@ -10,11 +10,15 @@ import ClientsDetails from '../../pages/ClientsDetails';
 import PageNotFound from '../../pages/PageNotFound';
 import TestApp from '../../pages/TestApp';
 
+import {QueryClientDetails} from "../Query/QueryClientDetails";
+import {QueryClients} from "../Query/QueryClients";
+
 import Navbar from '../Navbar';
 
 
 
-const index = () => {
+const Index = () => {
+  const [clientId, setClientId] = useState()
   return (
     <Router>
       <Navbar></Navbar>
@@ -32,6 +36,10 @@ const index = () => {
         <Route exact path="/clients-update/:id">
           <ClientUpdate/>
         </Route>
+        <Route exact path="/query-clients">
+          <QueryClients setClientId={setClientId} />
+          <QueryClientDetails id={clientId} />
+        </Route>
         <Route exact path="/payments" render={(props) => <Model {...props} model={'payments'} label={'Paiements'} />} />
         <Route exact path="/sessions" render={(props) => <Model {...props} model={'sessions'} label={'Rendez-vous'}/>} />        
         <Route exact path="/test" render={(props) => <TestApp {...props} />} />
@@ -42,4 +50,4 @@ const index = () => {
   )
 }
 
-export default index;
+export default Index;
