@@ -13,9 +13,9 @@ import TestApp from '../../pages/TestApp';
 import {QueryClientDetails} from "../Query/QueryClientDetails";
 import {QueryClients} from "../Query/QueryClients";
 
+import {Material} from "../../pages/Material";
+
 import Navbar from '../Navbar';
-
-
 
 const Index = () => {
   const [clientId, setClientId] = useState()
@@ -39,6 +39,9 @@ const Index = () => {
         <Route exact path="/query-clients">
           <QueryClients setClientId={setClientId} />
           <QueryClientDetails id={clientId} />
+        </Route>
+        <Route exact path="/material">
+          <Material/>
         </Route>
         <Route exact path="/payments" render={(props) => <Model {...props} model={'payments'} label={'Paiements'} />} />
         <Route exact path="/sessions" render={(props) => <Model {...props} model={'sessions'} label={'Rendez-vous'}/>} />        
