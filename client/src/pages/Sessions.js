@@ -1,13 +1,13 @@
 import React from 'react';
 
-const Home = () => {
+const Sessions = () => {
   return (
     <div>
       <div>
-        TODO DASHBOARD
+        TODO SESSIONS
       </div>
     </div>
   );
 }
 
-export default Home;
+export default Sessions;

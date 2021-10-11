@@ -1,5 +1,5 @@
 import Routes from './components/Routes';
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 const queryClient = new QueryClient();

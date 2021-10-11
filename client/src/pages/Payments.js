@@ -1,13 +1,13 @@
 import React from 'react';
 
-const Home = () => {
+const Payments = () => {
   return (
     <div>
       <div>
-        TODO DASHBOARD
+        TODO PAYMENTS
       </div>
     </div>
   );
 }
 
-export default Home;
+export default Payments;

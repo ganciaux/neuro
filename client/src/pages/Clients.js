@@ -1,69 +1,24 @@
 import React from 'react';
-import { useForm, Controller } from "react-hook-form"
-import DatePicker, { CalendarContainer } from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import BasicCard from '../components/BasicCard';
+import { Typography } from '@mui/material';
 
-const schema = yup.object({
-  username: yup.string().required(),
-  email: yup.string().email().required(),
-});
-
-const wait = function (duration = 1000) {
-  return new Promise((resolve) => {
-    window.setTimeout(resolve, duration)
-  })
-}
-
-function Clients() {
-  const { register, handleSubmit, formState, setError, control } = useForm({
-    mode: 'onTouched',
-    resolver: yupResolver(schema)
-  })
-  const { isSubmitting, isSubmitted, isSubmitSuccessful, errors } = formState;
-  const onSubmit = async (data) => {
-    await wait(2000);
-    console.log(data);
-    /*setError('username', {
-      type: 'manual',
-      message: "erreur serveur"
-    })*/
-  }
-
-  if (isSubmitSuccessful) {
-    console.log('redirect')  
-  }
-
-  console.log(errors);
-
+const Clients = () => {
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {isSubmitSuccessful && <div className="alert alert-success">Merci pour l'inscription</div>}
-      <input name="username" {...register('username')} />
-      {errors.username && <span>{ errors.username.message}</span>}
-      <input name="email" {...register('email')} />
-      {formState.errors.email && <span>{ errors.email.message}</span>}
-      <Controller
-        control={control}
-        rules={{
-         required: true,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <DatePicker
-            onBlur={onBlur}
-            onChange={onChange}
-            selected={value}
-          />
-        )}
-        name="birthday"
-      />
-      <input
- name="date"
- type="datetime-local"
-/>
-      <button disabled={ isSubmitting } type="submit">S'inscrire</button>
-    </form>
+    <>
+      <Typography variant="h5" gutterBottom component="div">
+        Patients
+      </Typography>
+    <Grid container spacing={2} style={{marginTop: "20px" }}>
+      <BasicCard>Client1</BasicCard>
+      <BasicCard>Client2</BasicCard>
+      <BasicCard>Client3</BasicCard>
+      <BasicCard>Client4</BasicCard>
+      <BasicCard>Client5</BasicCard>
+      <BasicCard>Client6</BasicCard>
+      </Grid>
+    </>
   );
 }
 
