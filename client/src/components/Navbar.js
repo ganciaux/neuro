@@ -7,19 +7,19 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import SideBar from './SideBar'
 
-export default function ButtonAppBar() {
+export default function Navbar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             size="large"
             edge="start"
             aria-label="menu"
             sx={{ mr: 2 }}
-          >
-            <SideBar/>       
+          > 
           </IconButton>
+          <SideBar/>      
         </Toolbar>
       </AppBar>
     </Box>

@@ -7,12 +7,12 @@ import Home from '../pages/Home'
 import Clients from '../pages/Clients'
 import Payments from '../pages/Payments'
 import Sessions from '../pages/Sessions'
-import Header from './Header';
+import Navbar from './Navbar';
 
 const Routes = () => {
     return (
         <>
-            <Header/>
+            <Navbar/>
       <Container maxWidth="lg">
           <br/>
         <Box sx={{ flexGrow: 1 }}>
