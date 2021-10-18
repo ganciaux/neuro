@@ -1,27 +1,23 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+import React, { useState } from 'react'
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import MenuIcon from '@mui/icons-material/Menu'
 import SideBar from './SideBar'
 
 export default function Navbar() {
+  const [state, toggleState] = useState(false)
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
+      <AppBar
+        position="fixed"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          > 
-          </IconButton>
-          <SideBar/>      
+          <MenuIcon onClick={() => toggleState(!state)} />
+          {state && <SideBar isOpen={state} toggleDrawer={toggleState} />}
         </Toolbar>
       </AppBar>
     </Box>
-  );
+  )
 }
